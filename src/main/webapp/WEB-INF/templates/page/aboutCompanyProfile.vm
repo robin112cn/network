@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="keywords" content="" />
+	<meta http-equiv="description" content="" />
+</head>
+<link rel="stylesheet" href="$!portalUrl/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/common.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/paginate_style.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/login.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/about.css">
+<script src="$!portalUrl/resources/js/jquery.min.js"></script>
+<script src="$!portalUrl/resources/js/bootstrap.min.js"></script>
+<script src="$!portalUrl/resources/js/common.js"></script>
+<script src="$!portalUrl/resources/js/md5/jquery.md5.js"></script>
+<body>
+	<!-- header start -->
+	<div class="header clearfix">
+ 	<div class="banner">
+	 	<div class="logo">
+	 		<img src="$!portalUrl/resources/img/home/logo.png" />
+	 	</div>
+	 	<div class="menu">
+	 		<ul class="navbar">
+				<li class="home">
+					<a href="$!portalUrl/index"></a>
+				</li>
+				<li class="store">
+					<a href="$!portalUrl/applist/show"></a>
+				<li class="news">
+					<a href="$!portalUrl/news.html"></a>
+				</li>
+				<li class="forum">
+					<a href="$!portalUrl/forum.html"></a>
+				</li>
+				<li class="about">
+					<a href="#" class="active"></a>
+				</li>
+				<li class="login">
+					<a href="$!portalUrl/login">登录</a>
+				<li>
+	 		</ul>
+	 	</div>
+ 	</div>
+ 	</div>
+	<!-- header end -->
+	<!-- container start -->
+	<div class="container">
+		<div class="title">  
+			<a href="company" class="hover">
+				<strong class="course">公司简介 </strong>
+			</a>
+			<a href="history" class="nohover">
+				<strong class="nocourse">发展历程</strong>
+			</a>
+			<a href="culture" class="nohover">
+				<strong class="nocourse">企业文化</strong>
+			</a>
+			<a href="employee" class="nohover">
+				<strong class="nocourse">员工风采</strong>
+			</a>
+			<div class="search"><input type="text" placeholder="请输入搜索内容"></div>
+		</div>
+		<div class="top">
+			<div class="txt_title">
+				公司简介
+			</div>
+			<div class="txt_content">
+				$!companyIntro
+			<!--
+			经过多年的发展，天喻信息已成为中国数据安全领域领先的研发、生
+			产、销售、服务综合提供商，产品涵盖卡、系统、终端。卡产品主要
+			包括金融IC卡、通信智能卡、社保卡、城市通卡、税控卡（盘）、加
+			油卡、移动多媒体广播电视有条件接收卡等，涵盖了目前智能卡应用 
+			的主要领域，并都拥有核心技术和自主知识产权。目前，天喻的业务
+			已扩展到全球20多个国家和地区。
+			-->
+			</div>
+		</div>
+		<div class="top_2">
+			<div class="p_title">产品介绍</div>
+			<div class="product">
+				<div class="p_name"><strong>$!produce1</strong></div>
+				<img alt="" style="width:336px; height:212px;" src="$!produceImg1">
+				<div class="p_content">
+					<div class="txt">$!produceIntro1...</div>
+				</div>
+			</div>
+			<div class="product">
+				<div class="p_name"><strong>$!produce2</strong></div>
+				<img alt="" style="width:336px; height:212px; " src="$!produceImg2">
+				<div class="p_content">
+					<div class="txt">$!produceIntro2...</div>
+				</div>
+			</div>
+			<div class="product2">
+				<div class="p_name"><strong>$!produce3</strong></div>
+				<img alt="" style="width:336px; height:212px; " src="$!produceImg3">
+				<div class="p_content">
+					<div class="txt">$!produceIntro3...</div>
+				</div>
+			</div>
+		</div>
+		<div class="top_3">
+			<div class="p_title">解决方案</div>
+			<div class="p_solve">
+				<div class="solve_txt">
+				<p class="p1">$!solutionShort</p>
+				<p class="p2">$!solutionLong</p>
+				<p class="p3">$!solutionContent</p>
+				</div>
+				<img alt=""  
+					style="width:680px; height:341px; position: relative;border-color: #e2e2e2;border-style: solid;border-width: 1px 1px 1px 0px;" src="$!solutionImg">
+			</div>
+		</div>
+		<div class="top_4">
+			<div class="p_title">成功案例</div>
+			<div class="demo">
+				<div class="demo_s">
+					<p class="d_title"><strong>$!case1</strong></p>
+					<p class="d_content">$!caseIntro1</p>
+				</div>
+				<div class="demo_pic">
+					<img alt="" style="width:256px; height:180px; position: relative;" src="$!caseImg1">
+				</div>
+				<div class="demo_s">
+					<p class="d_title"><strong>$!case2</strong></p>
+					<p class="d_content">$!caseIntro2</p>
+				</div>
+				<div class="demo_pic">
+					<img alt="" style="width:256px; height:180px; position: relative;" src="$!caseImg2">
+				</div>
+				<div class="demo_pic">
+					<img alt="" style="width:256px; height:180px; position: relative;" src="$!caseImg3">
+				</div>
+				<div class="demo_x">
+					<p class="d_title"><strong>$!case3</strong></p>
+					<p class="d_content">$!caseIntro3</p>
+				</div>
+				<div class="demo_pic">
+					<img alt="" style="width:256px; height:180px; position: relative;" src="$!caseImg4">
+				</div>
+				<div class="demo_x">
+					<p class="d_title"><strong>$!case4</strong></p>
+					<p class="d_content">$!caseIntro4</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- container end -->
+	<!-- footer start -->
+	<div class="footer">
+		<div class="footbar">
+			<a href="">产品介绍</a><div>丨</div>
+			<a href="">解决方案</a><div>丨</div>
+			<a href="">成功案例</a><div>丨</div>
+			<a href="">新闻动态</a><div>丨</div>
+			<a href="">关于我们</a><div>丨</div>
+			<a href="">NFC论坛</a>
+			<span>Copyright© 2013-2015 鄂ICP备123456号-2</span>
+		</div>
+	</div>
+</div>
+	<!-- footer end -->
+</body>
+</html>

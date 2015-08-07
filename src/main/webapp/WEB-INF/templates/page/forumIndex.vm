@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="keywords" content="" />
+	<meta http-equiv="description" content="" />
+</head>
+
+<link rel="stylesheet" href="$!portalUrl/resources/css/bootstrap.min.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/common.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/paginate_style.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/login.css">
+<link rel="stylesheet" href="$!portalUrl/resources/css/forum.css">
+<script src="$!portalUrl/resources/js/jquery.min.js"></script>
+<script src="$!portalUrl/resources/js/bootstrap.min.js"></script>
+<script src="$!portalUrl/resources/js/common.js"></script>
+<script src="$!portalUrl/resources/js/md5/jquery.md5.js"></script>
+
+<script type="text/javascript">
+//回车键搜索应用
+function searchKeyDown(e){
+	var event = e || window.event;
+	//回车
+    if (event.keyCode == 13)
+    {
+        event.returnValue=false;
+        event.cancel = true;
+        find();
+    }
+}
+function find(){
+	//window.location.href="search";
+}
+</script>
+<body>
+	<!-- header start -->
+	<div class="header clearfix">
+	 	<div class="banner">
+		 	<div class="logo">
+		 		<img src="$!portalUrl/resources/img/home/logo.png" />
+		 	</div>
+		 	<div class="menu">
+		 		<ul class="navbar">
+					<li class="home">
+						<a href="$!portalUrl/index"></a>
+					</li>
+					<li class="store">
+						<a href="$!portalUrl/applist/show"></a>
+					<li class="news">
+						<a href="$!portalUrl/news.html"></a>
+					</li>
+					<li class="forum">
+						<a href="$!portalUrl/forum.html"></a>
+					</li>
+					<li class="about">
+						<a href="#" class="active"></a>
+					</li>
+					<li class="login">
+						<a href="$!portalUrl/login">登录</a>
+					<li>
+		 		</ul>
+		 	</div>
+	 	</div>
+ 	</div>
+	<!-- header end -->
+	<!-- container start -->
+	<div class="container" >
+ 		<div class="title">  
+			<a href="$!nfcForumLink1" class="nohover">
+				<strong class="nocourse">NFC综合讨论</strong>
+			</a>
+			<a href="!nfcForumLink2" class="nohover">
+				<strong class="nocourse">技术支持</strong>
+			</a>
+			<a href="!nfcForumLink3" class="nohover">
+				<strong class="nocourse">技术共享</strong>
+			</a>
+			<a href="!nfcForumLink4" class="nohover">
+				<strong class="nocourse">NFC资料库</strong>
+			</a>
+			<div class="search">
+				<input type="text" placeholder="请输入搜索内容" id="app_search" onkeydown="searchKeyDown(event)">
+				<a onclick="find()" href="javascript:void(0);"></a>
+			</div>
+		</div>
+		<div class="box clearfix">
+			<div class="p_title">NFC综合讨论</div>
+			<div class="modbox clearfix">
+				<div class="pic">
+					<img src="$!portalUrl/resources/img/forum/img1.png">
+				</div>
+				<div class="list">
+					<div>
+						<ul>
+							#foreach($!forumZH in $!forumZHBeans)
+								<li>
+									<span>【$!forumZH.shortTitle】</span>
+									<span title="$!forumZH.longTitle">$!forumZH.showTitle</span>
+								</li>
+							#end
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box clearfix">
+			<div class="p_title">技术支持</div>
+			<div class="modbox clearfix">
+				<div class="leftbox clearfix">
+					<img src="$!portalUrl/resources/img/forum/img2.png">
+				</div>
+				<div class="rightbox">
+					<ul>
+						<li>
+							<div class="rlst">
+								<img alt="" src="$!portalUrl/resources/img/forum/img3.png">
+								<ul>
+								#foreach($!forumzc1 in $!forumZC1Beans)
+									<li>
+										<span title="$!forumzc1.longTitle">$!forumzc1.showTitle</span>
+									</li>
+								#end
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div class="rlst">
+								<img alt="" src="$!portalUrl/resources/img/forum/img4.png">
+								<ul>
+								#foreach($!forumzc2 in $!forumZC2Beans)
+									<li>
+										<span title="$!forumzc2.longTitle">$!forumzc2.showTitle</span>
+									</li>
+								#end
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div class="rlst">
+								<img alt="" src="$!portalUrl/resources/img/forum/img5.png">
+								<ul>
+								#foreach($!forumzc3 in $!forumZC3Beans)
+									<li>
+										<span title="$!forumzc3.longTitle">$!forumzc3.showTitle</span>
+									</li>
+								#end
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="box clearfix">
+			<div class="p_title">技术共享</div>
+			<div class="modbox clearfix">
+				<div class="pic">
+					<img src="$!portalUrl/resources/img/forum/img6.png">
+				</div>
+				<div class="list">
+					<div>
+						<ul>
+							<c:forEach begin="1" end="6">
+								#foreach($!forumjs in $!forumJSBeans)
+									<li>
+										<span>【$!forumjs.shortTitle】</span>
+										<span title="$!forumjs.longTitle">$!forumjs.showTitle</span>
+									</li>
+								#end
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box clearfix">
+			<div class="p_title">资料库</div>
+			<div class="modbox clearfix">
+				<div class="pic">
+					<img src="$!portalUrl/resources/img/forum/img1.png">
+					<span></span>
+				</div>
+				<div class="list">
+					<div>
+						<ul>
+							#foreach($!forumzl in $!forumZLBeans)
+								<li>
+									<span>【$!forumzl.shortTitle】</span>
+									<span title="$!forumzl.longTitle">$!forumzl.showTitle</span>
+								</li>
+							#end
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- container end -->
+	<!-- footer start -->
+	<%@ include file="/WEB-INF/view/portal/layout/footer.jsp"%>
+	<!-- footer end -->
+</body>
+</html>
