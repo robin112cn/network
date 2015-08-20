@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -13,8 +14,9 @@
 		<link href="${ctxResources}/global/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
 		<link href="${ctxResources}/pages/css/login-soft.css" rel="stylesheet" type="text/css"/>
 		<!-- END PAGE LEVEL STYLES -->
-        <title>登录</title>
+        <title><spring:message code="login.title"/></title>
     </head>
+    <div><a href="${ctx}/setLang?langType=zh">中文</a> &nbsp;|&nbsp; <a href="${ctx}/setLang?langType=en">English</a></div>
     <body class="login">
     	<div class="logo" style="margin-top:100px;">
 			<a href="#">
@@ -57,7 +59,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button class="btn btn-primary btn-block uppercase" type="submit">登录<i class="m-icon-swapright m-icon-white"></i></button>
+					<button class="btn btn-primary btn-block uppercase" type="submit"><spring:message code="login.title" /><i class="m-icon-swapright m-icon-white"></i></button>
 				</div>
 			</form>
 		</div>

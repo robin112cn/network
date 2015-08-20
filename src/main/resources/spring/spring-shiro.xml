@@ -20,6 +20,7 @@
 			/login.do = anon
 			/login = anon
 			/apply = anon
+			/setLang = anon
 			/image/**  = anon
 			/*.jsp* = authc
 			/*.do* = authc
