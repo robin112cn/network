@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2015-08-13 17:12:14
+Date: 2015-08-21 16:45:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -214,7 +214,7 @@ CREATE TABLE `base_users` (
 -- ----------------------------
 -- Records of base_users
 -- ----------------------------
-INSERT INTO `base_users` VALUES ('111', 'admin', '123456', '系统管理员', '0', 'admin@ty.com', '13888888888', '', null, '2015-08-12 11:31:16', '10.8.40.148', 'xxx', '0');
+INSERT INTO `base_users` VALUES ('111', 'admin', '123456', '系统管理员', '0', 'admin@ty.com', '13888888888', '', null, '2015-08-21 16:34:32', '10.8.40.148', 'xxx', '0');
 INSERT INTO `base_users` VALUES ('862bf83a7b0941e4801fe82c824cb05c', 'test3', '123456', '??1111111111111111111', '0', 'QQ1111111111111111@qq.com', '13512340009', '027-12345611', null, '2015-07-06 18:20:01', null, '1', '0');
 INSERT INTO `base_users` VALUES ('4a4e164516684b61a63e932d5151fd50', 'testtest1', '888888', 'fegkrjg', null, '', 'testtest1', null, null, '2015-07-08 13:28:02', '10.8.40.109', null, '0');
 INSERT INTO `base_users` VALUES ('ccf4b0265d304afa81439cccdfe1be90', 'test0051', '111111', 'test005', '1', '', '', '', null, '2015-07-23 13:52:22', '10.8.40.108', '', '0');
@@ -263,9 +263,9 @@ INSERT INTO `base_user_role` VALUES ('d1ca931b7095433994a441666dc38677', '04ba91
 -- ----------------------------
 DROP TABLE IF EXISTS `cable`;
 CREATE TABLE `cable` (
-  `cable_id` int(11) NOT NULL,
+  `cable_id` varchar(32) NOT NULL,
   `cable_name` varchar(255) DEFAULT NULL,
-  `switch_port__id` int(11) DEFAULT NULL,
+  `switch_port__id` varchar(32) DEFAULT NULL,
   `is_use` char(2) DEFAULT NULL,
   PRIMARY KEY (`cable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -279,9 +279,10 @@ CREATE TABLE `cable` (
 -- ----------------------------
 DROP TABLE IF EXISTS `device`;
 CREATE TABLE `device` (
-  `device_id` int(11) NOT NULL,
+  `device_id` varchar(32) NOT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
   `device_name` varchar(255) DEFAULT NULL,
-  `device_type` int(11) DEFAULT NULL,
+  `device_type` varchar(64) DEFAULT NULL,
   `device_os` varchar(255) DEFAULT NULL,
   `device_purpose` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`device_id`)
@@ -296,11 +297,11 @@ CREATE TABLE `device` (
 -- ----------------------------
 DROP TABLE IF EXISTS `networkadapter`;
 CREATE TABLE `networkadapter` (
-  `networkadapter_id` int(11) NOT NULL,
-  `networkadapter_type` int(11) DEFAULT NULL,
+  `networkadapter_id` varchar(32) NOT NULL,
+  `networkadapter_type` varchar(62) DEFAULT NULL,
   `networkadapter_mac` varchar(255) DEFAULT NULL,
-  `device_id` int(11) DEFAULT NULL,
-  `cable_id` int(11) DEFAULT NULL,
+  `device_id` varchar(32) DEFAULT NULL,
+  `cable_id` varchar(32) DEFAULT NULL,
   `conference_code` varchar(255) DEFAULT NULL,
   `ip` varchar(255) DEFAULT NULL,
   `deadline` datetime DEFAULT NULL,
@@ -316,9 +317,9 @@ CREATE TABLE `networkadapter` (
 -- ----------------------------
 DROP TABLE IF EXISTS `switch`;
 CREATE TABLE `switch` (
-  `switch_id` int(11) NOT NULL,
+  `switch_id` varchar(32) NOT NULL,
   `switch_name` varchar(255) DEFAULT NULL,
-  `switch_type` int(11) DEFAULT NULL,
+  `switch_type` varchar(64) DEFAULT NULL,
   `management_ip` varchar(255) DEFAULT NULL,
   `location_id` int(11) DEFAULT NULL,
   `port_num` int(11) DEFAULT NULL,
@@ -334,10 +335,10 @@ CREATE TABLE `switch` (
 -- ----------------------------
 DROP TABLE IF EXISTS `switchport`;
 CREATE TABLE `switchport` (
-  `switch_port_id` int(11) NOT NULL,
+  `switch_port_id` varchar(32) NOT NULL,
   `switch_port` varchar(255) DEFAULT NULL,
-  `vlan_id` int(11) DEFAULT NULL,
-  `switch_id` int(11) DEFAULT NULL,
+  `vlan_id` varchar(32) DEFAULT NULL,
+  `switch_id` varchar(32) DEFAULT NULL,
   `port_desc` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `limit_speed` double DEFAULT NULL,
@@ -353,7 +354,7 @@ CREATE TABLE `switchport` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(32) NOT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   `user_type` int(11) DEFAULT NULL,
   `user_department` varchar(255) DEFAULT NULL,
@@ -372,7 +373,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `vlan`;
 CREATE TABLE `vlan` (
-  `vlan_id` int(11) NOT NULL,
+  `vlan_id` varchar(32) NOT NULL,
   `vlan_name` varchar(255) DEFAULT NULL,
   `vlan_desc` varchar(255) DEFAULT NULL,
   `ip_section` varchar(255) DEFAULT NULL,

@@ -24,7 +24,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
 	}
 
 	@Override
-	public int deleteByPrimaryKey(int columnId) {
+	public int deleteByPrimaryKey(String columnId) {
 		return deviceMapper.deleteByPrimaryKey(columnId);
 	}
 
@@ -45,7 +45,7 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
 	}
 
 	@Override
-	public Device selectByPrimaryKey(int columnId) {
+	public Device selectByPrimaryKey(String columnId) {
 		return deviceMapper.selectByPrimaryKey(columnId);
 	}
 

@@ -12,11 +12,11 @@ import com.whty.cms.network.pojo.DeviceExample;
 public interface DeviceInfoService {
 
 	int countByExample(DeviceExample example);
-	int deleteByPrimaryKey(int columnId);
+	int deleteByPrimaryKey(String columnId);
 	int insertSelective(Device record);
 	List<Device> selectByExample(DeviceExample example);
 	PageList<Device> selectByExamplePaging(DeviceExample example, PageBounds pageBounds);
-	Device selectByPrimaryKey(int columnId);
+	Device selectByPrimaryKey(String columnId);
 	int updateByExampleSelective(@Param("record") Device record,
 			@Param("example") DeviceExample example);
 	int updateByPrimaryKey(Device record);
