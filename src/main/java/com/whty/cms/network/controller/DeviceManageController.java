@@ -1,7 +1,9 @@
 package com.whty.cms.network.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +19,20 @@ import org.springframework.web.servlet.ModelAndView;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.whty.cms.base.common.DataTableQueryMySQL;
+import com.whty.cms.base.pojo.BaseUserRoleExample;
+import com.whty.cms.base.pojo.BaseUserRoleKey;
+import com.whty.cms.base.pojo.BaseUsers;
+import com.whty.cms.base.pojo.BaseUsersExample;
+import com.whty.cms.base.pojo.BaseUsersExample.Criteria;
+import com.whty.cms.base.ucenter.ResponseResult;
+import com.whty.cms.base.ucenter.UCenterClient;
 import com.whty.cms.common.base.BaseController;
 import com.whty.cms.common.base.DataTableQuery;
+import com.whty.cms.common.util.CheckEmpty;
 import com.whty.cms.common.util.DateUtil;
-import com.whty.cms.network.pojo.ApplyInfo;
-import com.whty.cms.network.pojo.ApplyInfoExample;
-import com.whty.cms.network.service.ApplyInfoService;
+import com.whty.cms.network.pojo.Device;
+import com.whty.cms.network.pojo.DeviceExample;
+import com.whty.cms.network.service.DeviceInfoService;
 
 @Controller
 @RequestMapping("/deviceManage")
@@ -31,7 +41,7 @@ public class DeviceManageController extends BaseController {
 	
 	
 	@Autowired
-	private ApplyInfoService applyInfoService;
+	private DeviceInfoService deviceInfoService;
 
 	/**
 	 * 显示主列表页面
@@ -40,7 +50,7 @@ public class DeviceManageController extends BaseController {
 	 */
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show() {
-		ModelAndView mv = new ModelAndView("/tspm/trManage/trInfoUI");
+		ModelAndView mv = new ModelAndView("/network/device/deviceUI");
 		return mv;
 	}
 
@@ -53,11 +63,32 @@ public class DeviceManageController extends BaseController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/find", method = RequestMethod.POST)
-	public void find(HttpServletRequest request, HttpServletResponse response, ApplyInfo trInfo) throws IOException {
+	public void find(HttpServletRequest request, HttpServletResponse response, Device trInfo) throws IOException {
 		DataTableQuery dt = new DataTableQueryMySQL(request);
 		Map<String, Object> result = buildTableData(dt, trInfo);
 		writeJSONResult(result, response, DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
 
+	}
+	
+	/**
+	 * 新增/编辑用戶
+	 *
+	 * @param request
+	 * @param response
+	 * @param user
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public void addDevice(HttpServletRequest request,
+			HttpServletResponse response, Device device)
+			throws IOException {
+		response.setCharacterEncoding("utf-8");
+		int flag = 0;
+		String msg = "";
+		List<Object> list = new ArrayList<Object>();
+		list.add(flag);
+		list.add(msg);
+		writeJSONArrayResult(list, response);
 	}
 
 	/**
@@ -68,7 +99,7 @@ public class DeviceManageController extends BaseController {
 	 * @param tag
 	 */
 	@RequestMapping(value = "/pass", method = RequestMethod.POST)
-	public void pass(HttpServletRequest request, HttpServletResponse response, ApplyInfo trInfo, String tag) {
+	public void pass(HttpServletRequest request, HttpServletResponse response, Device trInfo, String tag) {
 		
 	}
 
@@ -80,14 +111,14 @@ public class DeviceManageController extends BaseController {
 	 * @param tag
 	 */
 	@RequestMapping(value = "/notpass", method = RequestMethod.POST)
-	public void notpass(HttpServletRequest request, HttpServletResponse response, ApplyInfo trInfo, String tag) {
+	public void notpass(HttpServletRequest request, HttpServletResponse response, Device trInfo, String tag) {
 		
 	}
 
 	@RequestMapping(value = { "/view" })
 	@ResponseBody
 	public void view(HttpServletResponse response, String pk) {
-//		ApplyInfo trInfo = this.applyInfoService.selectByPrimaryKey(pk);
+//		Device trInfo = this.applyInfoService.selectByPrimaryKey(pk);
 //		writeJSONResult(trInfo, response);
 	}
 
@@ -101,12 +132,12 @@ public class DeviceManageController extends BaseController {
 	 * @return
 	 * @throws IOException
 	 */
-	private Map<String, Object> buildTableData(DataTableQuery dt, ApplyInfo trInfo) throws IOException {
+	private Map<String, Object> buildTableData(DataTableQuery dt, Device trInfo) throws IOException {
 		// 当前页数
 		int currentNumber = dt.getPageStart() / dt.getPageLength() + 1;
 		PageBounds pageBounds = new PageBounds(currentNumber, dt.getPageLength());
-		ApplyInfoExample example = buildExample(dt, trInfo);
-		PageList<ApplyInfo> trInfos = applyInfoService.selectByExamplePaging(example, pageBounds);
+		DeviceExample example = buildExample(dt, trInfo);
+		PageList<Device> trInfos = deviceInfoService.selectByExamplePaging(example, pageBounds);
 		Map<String, Object> records = new HashMap<String, Object>();
 		records.put("data", trInfos);
 		records.put("draw", dt.getPageDraw());
@@ -122,9 +153,9 @@ public class DeviceManageController extends BaseController {
 	 * @param trInfo
 	 * @return
 	 */
-	private ApplyInfoExample buildExample(DataTableQuery dt, ApplyInfo trInfo) {
-		ApplyInfoExample exmple = new ApplyInfoExample();
-		ApplyInfoExample.Criteria criteria = exmple.createCriteria();
+	private DeviceExample buildExample(DataTableQuery dt, Device trInfo) {
+		DeviceExample exmple = new DeviceExample();
+		DeviceExample.Criteria criteria = exmple.createCriteria();
 		// 查询条件
 //		if (CheckEmpty.isNotEmpty(trInfo.getTrId())) {
 //			criteria.andTrIdLike("%" + trInfo.getTrId() + "%");

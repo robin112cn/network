@@ -46,6 +46,7 @@
 								<!--/span-->
 							</div>
 							<div class="btn-set pull-right col-md-2">
+								<button class="btn blue" data-toggle="modal" id="create">新增</button>
 								<shiro:hasPermission name="trManage:search">
 									<button class="btn green" id="search">查询</button>
 								</shiro:hasPermission>

@@ -3,6 +3,7 @@
  */
 var trFlag = 'TR_FLAG';
 var trFlagArray;
+
 // form校验
 var FormValidation = function() {
 	// validation using icons
@@ -24,42 +25,36 @@ var FormValidation = function() {
 					ignore : "", // validate all fields including form hidden
 					// input
 					rules : {
-//						trVersion : {
-//							maxlength : 32,
-//							required : true
-//						},
-//						trLevel : {
-//							maxlength : 128,
-//							required : true
-//						},
-//						trArea : {
-//							alphaNum : true,
-//							maxlength : 32,
-//							required : true
-//						},
-						remark : {
-							maxlength : 64,
+						deviceName : {
+							maxlength : 20,
+							required : true
+						},
+						deviceType : {
+							maxlength : 20,
+							required : true
+						},
+						deviceOs : {
+							maxlength : 20,
 							required : true
 						}
 					},
-					messages : {
+//					messages : {
 //						trVersion : {
 //							required : "请输入TR版本",
-//							maxlength : $.validator.format('TR版本不能超过{0}个字符')
+//							minlength : $.validator.format('TR版本必须为{0}个字符'),
+//							maxlength : $.validator.format('TR版本必须为{0}个字符')
 //						},
 //						trLevel : {
 //							required : "请输入TR授信级别",
-//							maxlength : $.validator.format('TR授信级别不能超过{0}个字符')
+//							minlength : $.validator.format('TR授信级别必须为{0}个字符'),
+//							maxlength : $.validator.format('TR授信级别必须为{0}个字符')
 //						},
 //						trArea : {
 //							required : "请输入TR隶属区域",
+//							minlength : $.validator.format('TR隶属区域不能少于{0}个字符'),
 //							maxlength : $.validator.format('TR隶属区域不能超过{0}个字符')
-//						},
-						remark : {
-							required : "请输入备注",
-							maxlength : $.validator.format('备注不能超过{0}个字符')
-						}
-					},
+//						}
+//					},
 
 					invalidHandler : function(event, validator) { // display
 						// error
@@ -78,7 +73,7 @@ var FormValidation = function() {
 						var icon = Metronic.handValidStyle(element);
 						icon.removeClass('fa-check').addClass("fa-warning");
 						icon.attr("data-original-title", error.text()).tooltip({
-									'container' : '#trInfoForm'
+									'container' : '#deviceForm'
 								});
 					},
 
@@ -121,11 +116,12 @@ var FormValidation = function() {
 	};
 }();
 // 页面信息
-var trInfoUI = function() {
+var deviceUI = function() {
 	var grid = new Datatable();
 	var validator = FormValidation.init();
 	trFlagArray = Fields.getFields(trFlag);
 	Fields.initSelect(trFlagArray, $('#trFlagSearch'));
+	
 	// 创建表格
 	var createTable = function() {
 		grid.init({
@@ -137,32 +133,129 @@ var trInfoUI = function() {
 						// execute some code on network or other general error
 					},
 					onDataLoad : function(grid) {
-						$(".approve").click(function() {
-									setFormStatus("approve");
+						$(".delete").click(function() {
 									var pk = $(this).attr("name");
-								/*	$.ajax({
+									if (!confirm("您确定要删除此设备信息？")) {
+										return false;
+									}
+									$.ajax({
 												type : 'POST',
-												url : ctx + '/trManage/view',
+												url : ctx + '/deviceManage/delete',
 												data : {
-													pk : pk
+													deviceId : pk
+												},
+												dataType : 'json',
+												success : function(data) {
+													if (data.success){
+														toastr['success']("删除成功", "系统提示");
+														trInfoUI.callback();
+													}else{
+														toastr['error'](data.msg, "系统提示");
+													}
+												},
+												error : function(data) {
+													toastr['error']("获取设备信息失败,请联系管理员！", "系统提示");
+												}
+											});
+								});
+						$(".update").click(function() {
+									setFormStatus("update");
+									var pk = $(this).attr("name");
+									$.ajax({
+												type : 'POST',
+												url : ctx + '/deviceManage/view',
+												data : {
+													deviceId : pk
 												},
 												dataType : 'json',
 												success : function(data) {
 													$.each(data, function(name, val) {
-																$('#trInfoForm').find("[name='" + name + "']").val(val);
+																$('#deviceForm').find("[name='" + name + "']").val(val);
 															});
 													Metronic.handleFixInputPlaceholderForIE();
 													$('#view').modal('show');
 												},
 												error : function(data) {
-													toastr['error']("获取TR信息失败,请联系管理员！", "系统提示");
+													toastr['error']("获取设备信息失败,请联系管理员！", "系统提示");
 												}
-											});*/
+											});
 								});
+//						$(".regist").click(function() {
+//									var pk = $(this).attr("name");
+//									if (!confirm("您确定要注册此TR信息？")) {
+//										return false;
+//									}
+//									$.ajax({
+//												type : 'POST',
+//												url : ctx + '/deviceManage/regist',
+//												data : {
+//													pk : pk
+//												},
+//												dataType : 'json',
+//												success : function(data) {
+//													if (data.success){
+//														toastr['success'](data.msg, "系统提示");
+//														trInfoUI.callback();
+//													}else{
+//														toastr['error'](data.msg, "系统提示");
+//													}
+//												},
+//												error : function(data) {
+//													toastr['error']("获取TR信息失败,请联系管理员！", "系统提示");
+//												}
+//											});
+//								});
+						$(".viewFlag").click(function() {
+									var pk = $(this).attr("name");
+									$.ajax({
+												type : 'POST',
+												url : ctx + '/deviceManage/viewFlag',
+												data : {
+													deviceId : pk
+												},
+												dataType : 'json',
+												success : function(data) {
+													if (data.success){
+														toastr['success'](data.msg, "系统提示");
+														trInfoUI.callback();
+													}else{
+														toastr['error'](data.msg, "系统提示");
+													}
+												},
+												error : function(data) {
+													toastr['error']("获取设备信息失败,请联系管理员！", "系统提示");
+												}
+											});
+								});
+//						$(".cancel").click(function() {
+//									var pk = $(this).attr("name");
+//									if (!confirm("您确定要注销此TR信息？")) {
+//										return false;
+//									}
+//									$.ajax({
+//												type : 'POST',
+//												url : ctx + '/deviceManage/cancel',
+//												data : {
+//													pk : pk
+//												},
+//												dataType : 'json',
+//												success : function(data) {
+//													if (data.success){
+//														toastr['success'](data.msg, "系统提示");
+//														trInfoUI.callback();
+//													}else{
+//														toastr['error'](data.msg, "系统提示");
+//													}
+//												},
+//												error : function(data) {
+//													toastr['error']("获取TR信息失败,请联系管理员！", "系统提示");
+//												}
+//											});
+//								});
 					},
 					loadingMessage : 'Loading...',
 					dataTable : {
-						'bStateSave' : true,
+						'bStateSave' : false,
 						'lengthMenu' : [[10, 20, 30], [10, 20, 30] // change
 						// per
 						// page
@@ -171,77 +264,49 @@ var trInfoUI = function() {
 						],
 						'pageLength' : 10,
 						'ajax' : {
-							url : ctx + '/applyManage/find'
+							url : ctx + '/deviceManage/find'
 						},
 						'formSearch' : 'searchForm',
 						"columnDefs" : [{
-									'orderable' : false,
-									'width' : "80px",
-									'targets' : [0]
-								}, {
-									'orderable' : false,
-									'width' : "110px",
-									'targets' : [1]
-								}, {
-									'orderable' : false,
-									'width' : "80px",
-									'targets' : [2]
-								}, {
-									'orderable' : false,
-									'width' : "80px",
-									'targets' : [3]
-								}, {
-									'orderable' : false,
-									'width' : "60px",
-									'targets' : [4]
-								}, {
-									'orderable' : false,
-									'width' : "120px",
-									'targets' : [5]
-								}, {
-									'orderable' : false,
-									'width' : "80px",
-									'targets' : [6]
-								}, {
-									'orderable' : false,
-									'width' : "120px",
-									'targets' : [7]
-								}, {
-									'orderable' : false,
-									
-									'targets' : [8]
-								}],
+								'orderable' : false,
+								'width' : "80px",
+								'targets' : [0]
+							}, {
+								'orderable' : false,
+								'width' : "110px",
+								'targets' : [1]
+							}, {
+								'orderable' : false,
+								'width' : "80px",
+								'targets' : [2]
+							}, {
+								'orderable' : false,
+								'width' : "80px",
+								'targets' : [3]
+							},{
+								'orderable' : false,
+								
+								'targets' : [4]
+							}],
 						'columns' : [{
-									'title' : '用户姓名',
-									'field' : 'userName'
-								}, {
-									'title' : '用户邮箱',
-									'field' : 'userEmail'
-								}, {
-									'title' : '设备名称',
-									'field' : 'deviceName'
-								}, {
-									'title' : '设备用途',
-									'field' : 'deviceUse'
-								}, {
-									'title' : '操作系统',
-									'field' : 'operOs'
-								}, {
-									'title' : 'MAC',
-									'field' : 'deviceMac'
-								}, {
-									'title' : '设备类型',
-									'field' : 'deviceType'
-								}, {
-									'title' : '截止时间',
-									'field' : 'untiTime'
-								}, {
-									'title' : '操作',
-									'field' : 'userId',
-									'custom': 'trFlag',
-									'fieldRender' : "getPremission"
-								}],
-						'order' : [[4, "desc"]]
+								'title' : '设备名称',
+								'field' : 'deviceName'
+							}, {
+								'title' : '设备类型',
+								'field' : 'deviceType'
+							}, {
+								'title' : '操作系统',
+								'field' : 'deviceOs'
+							}, {
+								'title' : '设备用途',
+								'field' : 'devicePurpose'
+							},{
+								'title' : '操作',
+								'field' : 'deviceId',
+								'custom': 'trFlag',
+								'fieldRender' : "getPremission"
+							}],
+						'order' : [[2, "desc"]]
 					}
 				});
 	};
@@ -278,56 +343,38 @@ var trInfoUI = function() {
 		toastr.options = options;
 		// 重置
 		$("#reset").click(function() {
-					$("#trIdSearch").val("");
 					$("#trFlagSearch").val("");
 					reload();
 				});
-		// 通过
-		$('#pass').click(function() {
-					if (!validator.form())
-						return false;
-					$.ajax({
-								type : 'POST',
-								url : ctx + '/trManage/pass',
-								data : $('#trInfoForm').serialize(),
-								dataType : 'json',
-								success : function(data) {
-									if (data.success) {
-										$('#view').modal('hide');
-										toastr['success'](data.msg, "系统提示");
-										trInfoUI.callback();
-									} else {
-										toastr['error'](data.msg, "系统提示");
-									}
-								},
-								error : function(data) {
-									toastr['error'](data.msg, "系统提示");
-								}
-							});
+		// 新增
+		$('#create').click(function() {
+					setFormStatus("add");
+					Metronic.handleFixInputPlaceholderForIE();
+					$('#view').modal('show');
 				});
-		// 不通过
-		$('#notpass').click(function() {
-					if (!validator.form())
-						return false;
-					$.ajax({
-								type : 'POST',
-								url : ctx + '/trManage/notpass',
-								data : $('#trInfoForm').serialize(),
-								dataType : 'json',
-								success : function(data) {
-									if (data.success) {
-										$('#view').modal('hide');
-										toastr['success'](data.msg, "系统提示");
-										trInfoUI.callback();
-									} else {
-										toastr['error'](data.msg, "系统提示");
-									}
-								},
-								error : function(data) {
-									toastr['error'](data.msg, "系统提示");
-								}
-							});
+		// 保存
+		$('#addDevice').click(function() {
+			if (!validator.form())
+				return false;
+			$.ajax({
+					type : 'POST',
+					url : ctx + '/deviceManage/save',
+					data : $('#deviceForm').serialize(),
+					dataType : 'json',
+					success : function(data) {
+						if (data.success) {
+							$('#view').modal('hide');
+							toastr['success'](data.msg, "系统提示");
+							trInfoUI.callback();
+						} else {
+							toastr['error'](data.msg, "系统提示");
+						}
+					},
+					error : function(data) {
+						toastr['error'](data.msg, "系统提示");
+					}
 				});
+			});
 	};
 	return {
 		init : function() {
@@ -347,13 +394,14 @@ function setFormStatus(type) {
 	// 清除验证css样式
 	$('.form-group').removeClass('has-error').removeClass('has-success');
 	$('.form-group i').removeClass().addClass('fa');
-	if ("approve" == type) {
-		$("#tag").val("approve");
-		$("#trId").attr("readOnly", true);
-		$("#trVersion").attr("readOnly", true);
-		$("#trInfoModalLabel").html("审批");
+	if ("update" == type) {
+		$("#tag").val("update");
+		$("#trInfoModalLabel").html("编辑TR信息");
+	} else if ("add" == type) {
+		$("#tag").val("add");
+		$("#trInfoModalLabel").html("新建TR信息");
 	}
-	$("#trInfoForm")[0].reset();
+	$("#deviceForm")[0].reset();
 };
 
 function showTrFlag(val) {

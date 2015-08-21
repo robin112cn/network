@@ -27,13 +27,13 @@
 			<property name="enableSubPackages" value="true" />
 	    </javaClientGenerator>
 	    
-		<!-- <table tableName="cable" domainObjectName="Cable"></table>
+		<table tableName="cable" domainObjectName="Cable"></table>
 		<table tableName="device" domainObjectName="Device"></table>
 		<table tableName="networkadapter" domainObjectName="NetworkAdapter"></table>
 		<table tableName="switch" domainObjectName="Switch"></table>
 		<table tableName="switchport" domainObjectName="SwitchPort"></table>
 		<table tableName="user" domainObjectName="User"></table>
-		<table tableName="vlan" domainObjectName="Vlan"></table> -->
-		<table tableName="apply_info" domainObjectName="ApplyInfo"></table>
+		<table tableName="vlan" domainObjectName="Vlan"></table>
+		<!-- <table tableName="apply_info" domainObjectName="ApplyInfo"></table> -->
 	</context>
 </generatorConfiguration>
