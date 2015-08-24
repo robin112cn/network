@@ -37,9 +37,9 @@
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label col-md-4">用户邮箱</label>
+										<label class="control-label col-md-4">邮箱</label>
 										<div class="col-md-8">
-											<input type="text" name="userEmail" id="userEmailSearch" placeholder="用户邮箱" class="form-control form-filter">
+											<input type="text" name="userEmail" id="userEmailSearch" placeholder="邮箱" class="form-control form-filter">
 										</div>
 									</div>
 								</div>

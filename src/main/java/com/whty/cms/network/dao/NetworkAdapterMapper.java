@@ -1,9 +1,13 @@
 package com.whty.cms.network.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.whty.cms.network.pojo.NetworkAdapter;
 import com.whty.cms.network.pojo.NetworkAdapterExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface NetworkAdapterMapper {
 
@@ -74,4 +78,7 @@ public interface NetworkAdapterMapper {
 	 * @mbggenerated  Fri Aug 21 16:44:04 CST 2015
 	 */
 	int updateByPrimaryKey(NetworkAdapter record);
+	
+	PageList<NetworkAdapter> selectByExamplePaging(NetworkAdapterExample example,
+			PageBounds pageBounds);
 }

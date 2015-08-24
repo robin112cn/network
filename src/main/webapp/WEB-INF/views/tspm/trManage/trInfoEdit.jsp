@@ -6,7 +6,7 @@
 				<!-- 对话框标题开始 -->
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title" id="titleLabel">TR信息</h4>
+					<h4 class="modal-title" id="titleLabel">IP地址分配</h4>
 				</div>
 				<!-- 对话框标题结束-->
 				<!-- 内容开始 -->

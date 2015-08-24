@@ -25,6 +25,23 @@ var FormValidation = function() {
 					ignore : "", // validate all fields including form hidden
 					// input
 					rules : {
+						userName : {
+							maxlength : 20,
+							required : true
+						},
+						userDepartment : {
+							maxlength : 40,
+							required : true
+						},
+						userLeader : {
+							maxlength : 40,
+							required : true,
+							email : true
+						},
+						userPhone : {
+							maxlength : 20,
+							required : true
+						},
 						deviceName : {
 							maxlength : 20,
 							required : true
@@ -158,6 +175,61 @@ var deviceUI = function() {
 												}
 											});
 								});
+						$(".viewIp").click(function() {
+							var pk = $(this).attr("name");
+							$.ajax({
+								type : 'POST',
+								url : ctx + '/deviceManage/viewIp',
+								data : {
+									deviceId : pk
+								},
+								dataType : 'json',
+								success : function(data) {
+									var np1,np2,np3 = false;
+									$.each(data, function(name, val) {
+										$('#ipViewForm').find("[name='" + name + "View']").val(val);
+										if(name == 'np1Type' && val){
+											np1 =  true;
+										}
+										if(name == 'np1Mac' && val){
+											np1 =  true ;
+										}
+										if(name == 'np2Type' && val){
+											np2 =  true;
+										}
+										if(name == 'np2Mac' && val){
+											np2 =  true ;
+										}
+										if(name == 'np3Type' && val){
+											np3 =  true;
+										}
+										if(name == 'np3Mac' && val){
+											np3 =  true ;
+										}
+									});
+									if(np1){
+										$("#np1View").show();
+									}else{
+										$("#np1View").hide();
+									}
+									if(np2){
+										$("#np2View").show();
+									}else{
+										$("#np2View").hide();
+									}
+									if(np3){
+										$("#np3View").show();
+									}else{
+										$("#np3").hide();
+									}
+									Metronic.handleFixInputPlaceholderForIE();
+									$('#viewIp').modal('show');
+								},
+								error : function(data) {
+									toastr['error']("获取设备信息失败,请联系管理员！", "系统提示");
+								}
+							});
+						});
 						$(".update").click(function() {
 									setFormStatus("update");
 									var pk = $(this).attr("name");
@@ -169,9 +241,43 @@ var deviceUI = function() {
 												},
 												dataType : 'json',
 												success : function(data) {
+													var np1,np2,np3 = false;
 													$.each(data, function(name, val) {
-																$('#deviceForm').find("[name='" + name + "']").val(val);
-															});
+														$('#deviceForm').find("[name='" + name + "']").val(val);
+														if(name == 'np1Type' && val){
+															np1 =  true;
+														}
+														if(name == 'np1Mac' && val){
+															np1 =  true ;
+														}
+														if(name == 'np2Type' && val){
+															np2 =  true;
+														}
+														if(name == 'np2Mac' && val){
+															np2 =  true ;
+														}
+														if(name == 'np3Type' && val){
+															np3 =  true;
+														}
+														if(name == 'np3Mac' && val){
+															np3 =  true ;
+														}
+													});
+													if(np1){
+														$("#np1").show();
+													}else{
+														$("#np1").hide();
+													}
+													if(np2){
+														$("#np2").show();
+													}else{
+														$("#np2").hide();
+													}
+													if(np3){
+														$("#np3").show();
+													}else{
+														$("#np3").hide();
+													}
 													Metronic.handleFixInputPlaceholderForIE();
 													$('#view').modal('show');
 												},
@@ -205,27 +311,29 @@ var deviceUI = function() {
 //												}
 //											});
 //								});
-						$(".viewFlag").click(function() {
+						$(".mailTo").click(function() {
 									var pk = $(this).attr("name");
-									$.ajax({
-												type : 'POST',
-												url : ctx + '/deviceManage/viewFlag',
-												data : {
-													deviceId : pk
-												},
-												dataType : 'json',
-												success : function(data) {
-													if (data.success){
-														toastr['success'](data.msg, "系统提示");
-														trInfoUI.callback();
-													}else{
-														toastr['error'](data.msg, "系统提示");
-													}
-												},
-												error : function(data) {
-													toastr['error']("获取设备信息失败,请联系管理员！", "系统提示");
-												}
-											});
+									toastr['success']("邮件已发送，请耐心等待回复", "系统提示");
+									deviceUI.callback();
+//									$.ajax({
+//												type : 'POST',
+//												url : ctx + '/deviceManage/viewFlag',
+//												data : {
+//													deviceId : pk
+//												},
+//												dataType : 'json',
+//												success : function(data) {
+//													if (data.success){
+//														toastr['success'](data.msg, "系统提示");
+//														trInfoUI.callback();
+//													}else{
+//														toastr['error'](data.msg, "系统提示");
+//													}
+//												},
+//												error : function(data) {
+//													toastr['error']("获取设备信息失败,请联系管理员！", "系统提示");
+//												}
+//											});
 								});
 //						$(".cancel").click(function() {
 //									var pk = $(this).attr("name");
@@ -300,10 +408,18 @@ var deviceUI = function() {
 							}, {
 								'title' : '设备用途',
 								'field' : 'devicePurpose'
+							}, {
+								'title' : '审核状态',
+								'field' : 'authStat',
+								'fieldRender' : "checkAuthStat"
+							}, {
+								'title' : 'IP分配状态',
+								'field' : 'deviceFlag',
+								'fieldRender' : "checkFlagStat"
 							},{
 								'title' : '操作',
 								'field' : 'deviceId',
-								'custom': 'trFlag',
+								'custom': 'deviceFlag',
 								'fieldRender' : "getPremission"
 							}],
 						'order' : [[2, "desc"]]
@@ -362,7 +478,7 @@ var deviceUI = function() {
 					data : $('#deviceForm').serialize(),
 					dataType : 'json',
 					success : function(data) {
-						if (data.success) {
+						if (data.flag>0) {
 							$('#view').modal('hide');
 							toastr['success'](data.msg, "系统提示");
 							trInfoUI.callback();
@@ -406,4 +522,48 @@ function setFormStatus(type) {
 
 function showTrFlag(val) {
 	return Fields.showDisplay(trFlagArray, val);
+}
+
+var npnum = 1;
+function addNetworkAdapter() {
+	$("#np"+npnum).show();
+	if(npnum>3){
+		if($("#np1").is(":hidden")){
+			$("#np1").show();
+			return;
+		}
+		if($("#np2").is(":hidden")){
+			$("#np2").show();
+			return;
+		}
+		if($("#np3").is(":hidden")){
+			$("#np3").show();
+			return;
+		}
+		alert("一个设备最多创建3块网卡");
+		return;
+	}
+	npnum++;
+}
+
+function deleteNp(index) {
+	$("#np"+index).hide();
+	$("#np"+index+"TypeAdd").val('');
+	$("#np"+index+"Mac").val('');
+}
+
+function checkAuthStat(data){
+	if(data=="1"){
+		return "已审核";
+	}else{
+		return "未审核";
+	}
+}
+
+function checkFlagStat(data){
+	if(data=="1"){
+		return "已分配";
+	}else{
+		return "未分配";
+	}
 }

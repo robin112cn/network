@@ -19,20 +19,20 @@ import org.springframework.web.servlet.ModelAndView;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.whty.cms.base.common.DataTableQueryMySQL;
-import com.whty.cms.base.pojo.BaseUserRoleExample;
-import com.whty.cms.base.pojo.BaseUserRoleKey;
-import com.whty.cms.base.pojo.BaseUsers;
-import com.whty.cms.base.pojo.BaseUsersExample;
-import com.whty.cms.base.pojo.BaseUsersExample.Criteria;
-import com.whty.cms.base.ucenter.ResponseResult;
-import com.whty.cms.base.ucenter.UCenterClient;
 import com.whty.cms.common.base.BaseController;
 import com.whty.cms.common.base.DataTableQuery;
 import com.whty.cms.common.util.CheckEmpty;
 import com.whty.cms.common.util.DateUtil;
+import com.whty.cms.common.util.UUIDUtil;
+import com.whty.cms.network.dto.DeviceDto;
 import com.whty.cms.network.pojo.Device;
 import com.whty.cms.network.pojo.DeviceExample;
+import com.whty.cms.network.pojo.NetworkAdapter;
+import com.whty.cms.network.pojo.NetworkAdapterExample;
+import com.whty.cms.network.pojo.User;
 import com.whty.cms.network.service.DeviceInfoService;
+import com.whty.cms.network.service.NetworkAdapterInfoService;
+import com.whty.cms.network.service.UserService;
 
 @Controller
 @RequestMapping("/deviceManage")
@@ -42,6 +42,12 @@ public class DeviceManageController extends BaseController {
 	
 	@Autowired
 	private DeviceInfoService deviceInfoService;
+	
+	@Autowired
+	private NetworkAdapterInfoService networkAdapterInfoService;
+	
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 显示主列表页面
@@ -80,12 +86,77 @@ public class DeviceManageController extends BaseController {
 	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public void addDevice(HttpServletRequest request,
-			HttpServletResponse response, Device device)
+			HttpServletResponse response, DeviceDto deviceDto)
 			throws IOException {
 		response.setCharacterEncoding("utf-8");
 		int flag = 0;
 		String msg = "";
 		List<Object> list = new ArrayList<Object>();
+		String tag = deviceDto.getTag();
+		if("add".equals(tag)){
+			String userId = UUIDUtil.getUuidString();//request.getSession().getAttribute(Constant.BaseUsersConstant.USERID).toString();
+			User userInfo = new User();
+			userInfo.setUserId(userId);
+			userInfo.setUserDepartment(deviceDto.getUserDepartment());
+			userInfo.setUserLeader(deviceDto.getUserLeader());
+			userInfo.setUserName(deviceDto.getUserName());
+			userInfo.setUserPhone(deviceDto.getUserPhone());
+			userInfo.setUserType(1);
+			userService.insertSelective(userInfo);
+			//新增
+			String deviceId = UUIDUtil.getUuidString();
+			Device device = new Device();
+			device.setDeviceId(deviceId);
+			device.setDeviceName(deviceDto.getDeviceName());
+			device.setDeviceOs(deviceDto.getDeviceOs());
+			device.setDevicePurpose(deviceDto.getDevicePurpose());
+			device.setDeviceType(deviceDto.getDeviceType());
+			device.setUserId(userId);
+			//默认审核通过
+			device.setAuthStat("1");
+			//未分配IP
+			device.setDeviceFlag("0");
+			
+			flag = deviceInfoService.insertSelective(device);
+			
+			//网卡信息
+			NetworkAdapter adapter1 = new NetworkAdapter();
+			NetworkAdapter adapter2 = new NetworkAdapter();
+			NetworkAdapter adapter3 = new NetworkAdapter();
+			if(CheckEmpty.isNotEmpty(deviceDto.getNp1Mac()) && CheckEmpty.isNotEmpty(deviceDto.getNp1Type())){
+				adapter1.setNetworkadapterId(UUIDUtil.getUuidString());
+				adapter1.setDeviceId(deviceId);
+				adapter1.setNetworkadapterMac(deviceDto.getNp1Mac());
+				adapter1.setNetworkadapterType(deviceDto.getNp1Type());
+				networkAdapterInfoService.insertSelective(adapter1);
+			}
+			
+			if(CheckEmpty.isNotEmpty(deviceDto.getNp2Mac()) && CheckEmpty.isNotEmpty(deviceDto.getNp2Type())){
+				adapter2.setNetworkadapterId(UUIDUtil.getUuidString());
+				adapter2.setDeviceId(deviceId);
+				adapter2.setNetworkadapterMac(deviceDto.getNp2Mac());
+				adapter2.setNetworkadapterType(deviceDto.getNp2Type());
+				networkAdapterInfoService.insertSelective(adapter2);
+			}
+			
+			if(CheckEmpty.isNotEmpty(deviceDto.getNp3Mac()) && CheckEmpty.isNotEmpty(deviceDto.getNp3Type())){
+				adapter3.setNetworkadapterId(UUIDUtil.getUuidString());
+				adapter3.setDeviceId(deviceId);
+				adapter3.setNetworkadapterMac(deviceDto.getNp3Mac());
+				adapter3.setNetworkadapterType(deviceDto.getNp3Type());
+				networkAdapterInfoService.insertSelective(adapter3);
+			}
+			
+			if (flag > 0) {
+				msg = "添加设备成功，已发送邮件给审核人员";
+			} else {
+				msg = "添加设备失败，请联系管理员";
+			}
+			
+		}else if("update".equals(tag)){
+			//修改
+		}
+		
 		list.add(flag);
 		list.add(msg);
 		writeJSONArrayResult(list, response);
@@ -117,9 +188,77 @@ public class DeviceManageController extends BaseController {
 
 	@RequestMapping(value = { "/view" })
 	@ResponseBody
-	public void view(HttpServletResponse response, String pk) {
-//		Device trInfo = this.applyInfoService.selectByPrimaryKey(pk);
-//		writeJSONResult(trInfo, response);
+	public void view(HttpServletResponse response, String deviceId) {
+		Device deviceInfo = deviceInfoService.selectByPrimaryKey(deviceId);
+		NetworkAdapterExample adapterExample = new NetworkAdapterExample();
+		NetworkAdapterExample.Criteria criteria = adapterExample
+				.createCriteria();
+		criteria.andDeviceIdEqualTo(deviceId);
+		List<NetworkAdapter> naList = networkAdapterInfoService.selectByExample(adapterExample);
+		DeviceDto deviceDto = new DeviceDto();
+		deviceDto.setDeviceId(deviceId);
+		deviceDto.setDeviceName(deviceInfo.getDeviceName());
+		deviceDto.setDeviceOs(deviceInfo.getDeviceOs());
+		deviceDto.setDevicePurpose(deviceInfo.getDevicePurpose());
+		deviceDto.setDeviceType(deviceInfo.getDeviceType());
+		
+		if(naList!=null && naList.size()>0){
+			for(int i=0;i<naList.size();i++){
+				if(i==0){
+					deviceDto.setNp1Mac(naList.get(0).getNetworkadapterMac());
+					deviceDto.setNp1Type(naList.get(0).getNetworkadapterType());
+				}
+				if(i==1){
+					deviceDto.setNp2Mac(naList.get(1).getNetworkadapterMac());
+					deviceDto.setNp2Type(naList.get(1).getNetworkadapterType());
+				}
+				if(i==2){
+					deviceDto.setNp3Mac(naList.get(2).getNetworkadapterMac());
+					deviceDto.setNp3Type(naList.get(2).getNetworkadapterType());
+				}
+			}
+		}
+		writeJSONResult(deviceDto, response);
+	}
+	
+	@RequestMapping(value = { "/viewIp" })
+	@ResponseBody
+	public void viewIp(HttpServletResponse response, String deviceId) {
+		Device deviceInfo = deviceInfoService.selectByPrimaryKey(deviceId);
+		NetworkAdapterExample adapterExample = new NetworkAdapterExample();
+		NetworkAdapterExample.Criteria criteria = adapterExample
+				.createCriteria();
+		criteria.andDeviceIdEqualTo(deviceId);
+		List<NetworkAdapter> naList = networkAdapterInfoService.selectByExample(adapterExample);
+		DeviceDto deviceDto = new DeviceDto();
+		deviceDto.setDeviceId(deviceId);
+		deviceDto.setDeviceName(deviceInfo.getDeviceName());
+		deviceDto.setDeviceOs(deviceInfo.getDeviceOs());
+		deviceDto.setDevicePurpose(deviceInfo.getDevicePurpose());
+		deviceDto.setDeviceType(deviceInfo.getDeviceType());
+		if(naList!=null && naList.size()>0){
+			for(int i=0;i<naList.size();i++){
+				if(i==0){
+					deviceDto.setNp1Mac(naList.get(0).getNetworkadapterMac());
+					deviceDto.setNp1Type(naList.get(0).getNetworkadapterType());
+					deviceDto.setNp1Ip(naList.get(0).getIp());
+					deviceDto.setNp1Deadline(naList.get(0).getDeadline());
+				}
+				if(i==1){
+					deviceDto.setNp2Mac(naList.get(1).getNetworkadapterMac());
+					deviceDto.setNp2Type(naList.get(1).getNetworkadapterType());
+					deviceDto.setNp2Ip(naList.get(1).getIp());
+					deviceDto.setNp2Deadline(naList.get(1).getDeadline());
+				}
+				if(i==2){
+					deviceDto.setNp3Mac(naList.get(2).getNetworkadapterMac());
+					deviceDto.setNp3Type(naList.get(2).getNetworkadapterType());
+					deviceDto.setNp3Ip(naList.get(2).getIp());
+					deviceDto.setNp3Deadline(naList.get(2).getDeadline());
+				}
+			}
+		}
+		writeJSONResult(deviceDto, response);
 	}
 
 	/**

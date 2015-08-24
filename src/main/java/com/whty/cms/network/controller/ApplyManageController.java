@@ -20,9 +20,15 @@ import com.whty.cms.base.common.DataTableQueryMySQL;
 import com.whty.cms.common.base.BaseController;
 import com.whty.cms.common.base.DataTableQuery;
 import com.whty.cms.common.util.DateUtil;
+import com.whty.cms.network.dto.DeviceDto;
 import com.whty.cms.network.pojo.ApplyInfo;
-import com.whty.cms.network.pojo.ApplyInfoExample;
+import com.whty.cms.network.pojo.Device;
+import com.whty.cms.network.pojo.DeviceExample;
+import com.whty.cms.network.pojo.User;
 import com.whty.cms.network.service.ApplyInfoService;
+import com.whty.cms.network.service.DeviceInfoService;
+import com.whty.cms.network.service.NetworkAdapterInfoService;
+import com.whty.cms.network.service.UserService;
 
 @Controller
 @RequestMapping("/applyManage")
@@ -33,6 +39,16 @@ public class ApplyManageController extends BaseController {
 	@Autowired
 	private ApplyInfoService applyInfoService;
 
+	
+	@Autowired
+	private DeviceInfoService deviceInfoService;
+	
+	@Autowired
+	private NetworkAdapterInfoService networkAdapterInfoService;
+	
+	@Autowired
+	private UserService userService;
+	
 	/**
 	 * 显示主列表页面
 	 * 
@@ -53,7 +69,7 @@ public class ApplyManageController extends BaseController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/find", method = RequestMethod.POST)
-	public void find(HttpServletRequest request, HttpServletResponse response, ApplyInfo trInfo) throws IOException {
+	public void find(HttpServletRequest request, HttpServletResponse response, Device trInfo) throws IOException {
 		DataTableQuery dt = new DataTableQueryMySQL(request);
 		Map<String, Object> result = buildTableData(dt, trInfo);
 		writeJSONResult(result, response, DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
@@ -101,18 +117,45 @@ public class ApplyManageController extends BaseController {
 	 * @return
 	 * @throws IOException
 	 */
-	private Map<String, Object> buildTableData(DataTableQuery dt, ApplyInfo trInfo) throws IOException {
+	private Map<String, Object> buildTableData(DataTableQuery dt, Device trInfo) throws IOException {
 		// 当前页数
 		int currentNumber = dt.getPageStart() / dt.getPageLength() + 1;
 		PageBounds pageBounds = new PageBounds(currentNumber, dt.getPageLength());
-		ApplyInfoExample example = buildExample(dt, trInfo);
-		PageList<ApplyInfo> trInfos = applyInfoService.selectByExamplePaging(example, pageBounds);
+		DeviceExample example = buildExample(dt, trInfo);
+		PageList<Device> trInfos = deviceInfoService.selectByExamplePaging(example, pageBounds);
 		Map<String, Object> records = new HashMap<String, Object>();
-		records.put("data", trInfos);
+		PageList<DeviceDto> infos = buildDto(trInfos);
+		records.put("data", infos);
 		records.put("draw", dt.getPageDraw());
 		records.put("recordsTotal", trInfos.getPaginator().getTotalCount());
 		records.put("recordsFiltered", trInfos.getPaginator().getTotalCount());
 		return records;
+	}
+
+	private PageList<DeviceDto> buildDto(PageList<Device> trInfos) {
+		PageList<DeviceDto> infos = new PageList<DeviceDto>();
+		for(int i=0;i<trInfos.size();i++){
+			DeviceDto dto = new DeviceDto();
+			Device d = trInfos.get(i);
+			dto.setDeviceId(d.getDeviceId());
+			dto.setDeviceName(d.getDeviceName());
+			dto.setDeviceOs(d.getDeviceOs());
+			dto.setDevicePurpose(d.getDevicePurpose());
+			dto.setDeviceType(d.getDeviceType());
+			dto.setUserId(d.getUserId());
+			dto.setAuthStat(d.getAuthStat());
+			dto.setDeviceFlag(d.getDeviceFlag());
+			
+			//查询用户信息
+			User u = userService.selectByPrimaryKey(d.getUserId());
+			dto.setUserDepartment(u.getUserDepartment());
+			dto.setUserLeader(u.getUserLeader());
+			dto.setUserName(u.getUserName());
+			dto.setUserPhone(u.getUserPhone());
+			dto.setUserType(u.getUserType());
+			infos.add(dto);
+		}
+		return infos;
 	}
 
 	/**
@@ -122,9 +165,11 @@ public class ApplyManageController extends BaseController {
 	 * @param trInfo
 	 * @return
 	 */
-	private ApplyInfoExample buildExample(DataTableQuery dt, ApplyInfo trInfo) {
-		ApplyInfoExample exmple = new ApplyInfoExample();
-		ApplyInfoExample.Criteria criteria = exmple.createCriteria();
+	private DeviceExample buildExample(DataTableQuery dt, Device trInfo) {
+		DeviceExample exmple = new DeviceExample();
+		DeviceExample.Criteria criteria = exmple.createCriteria();
+		//审核通过的
+		criteria.andAuthStatEqualTo("1");
 		// 查询条件
 //		if (CheckEmpty.isNotEmpty(trInfo.getTrId())) {
 //			criteria.andTrIdLike("%" + trInfo.getTrId() + "%");

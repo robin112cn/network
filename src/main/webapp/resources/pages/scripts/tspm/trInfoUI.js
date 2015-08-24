@@ -188,11 +188,11 @@ var trInfoUI = function() {
 									'targets' : [2]
 								}, {
 									'orderable' : false,
-									'width' : "80px",
+									'width' : "60px",
 									'targets' : [3]
 								}, {
 									'orderable' : false,
-									'width' : "60px",
+									'width' : "120px",
 									'targets' : [4]
 								}, {
 									'orderable' : false,
@@ -200,48 +200,33 @@ var trInfoUI = function() {
 									'targets' : [5]
 								}, {
 									'orderable' : false,
-									'width' : "80px",
 									'targets' : [6]
-								}, {
-									'orderable' : false,
-									'width' : "120px",
-									'targets' : [7]
-								}, {
-									'orderable' : false,
-									
-									'targets' : [8]
 								}],
 						'columns' : [{
 									'title' : '用户姓名',
 									'field' : 'userName'
 								}, {
-									'title' : '用户邮箱',
-									'field' : 'userEmail'
+									'title' : '导师/组长邮箱',
+									'field' : 'userLeader'
 								}, {
 									'title' : '设备名称',
 									'field' : 'deviceName'
 								}, {
 									'title' : '设备用途',
-									'field' : 'deviceUse'
+									'field' : 'devicePurpose'
 								}, {
 									'title' : '操作系统',
-									'field' : 'operOs'
-								}, {
-									'title' : 'MAC',
-									'field' : 'deviceMac'
+									'field' : 'deviceOs'
 								}, {
 									'title' : '设备类型',
 									'field' : 'deviceType'
 								}, {
-									'title' : '截止时间',
-									'field' : 'untiTime'
-								}, {
 									'title' : '操作',
-									'field' : 'userId',
-									'custom': 'trFlag',
+									'field' : 'deviceId',
+									'custom': 'userId',
 									'fieldRender' : "getPremission"
 								}],
-						'order' : [[4, "desc"]]
+						'order' : [[1, "desc"]]
 					}
 				});
 	};

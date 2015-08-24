@@ -60,8 +60,13 @@
 			//
 			deviceUI.init();
 		});
-		function getPremission(data){
-			var approve = "<shiro:hasPermission name='trManage:approve'><a class='btn default approve btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 分配IP </a><a class='btn default approve btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 发送邮件 </a></shiro:hasPermission>";
+		function getPremission(data,custom){
+			var approve = "<a class='btn default update btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 编辑 </a><a class='btn default mailTo btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 发送邮件 </a>";
+			if(custom == "1"){
+				approve += "<a class='btn default viewIp btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 查看分配IP </a>";
+			}else if(custom == "0"){
+				
+			}
 			return approve;
 		}
 		</script>

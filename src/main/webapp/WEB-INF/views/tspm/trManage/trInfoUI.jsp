@@ -61,7 +61,7 @@
 			trInfoUI.init();
 		});
 		function getPremission(data){
-			var approve = "<shiro:hasPermission name='trManage:approve'><a class='btn default approve btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 分配IP </a><a class='btn default approve btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 发送邮件 </a></shiro:hasPermission>";
+			var approve = "<a class='btn default approve btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 分配IP </a><a class='btn default approve btn-xs blue' name='" + data + "'><i class='fa fa-edit'></i> 发送邮件 </a>";
 			return approve;
 		}
 		</script>
