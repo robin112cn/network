@@ -38,11 +38,11 @@ public class NetworkAdapterServiceImpl implements NetworkAdapterInfoService {
 		return networkAdapterMapper.selectByExample(example);
 	}
 
-	@Override
-	public PageList<NetworkAdapter> selectByExamplePaging(NetworkAdapterExample example,
-			PageBounds pageBounds) {
-		return networkAdapterMapper.selectByExamplePaging(example, pageBounds);
-	}
+//	@Override
+//	public PageList<NetworkAdapter> selectByExamplePaging(NetworkAdapterExample example,
+//			PageBounds pageBounds) {
+//		return networkAdapterMapper.selectByExamplePaging(example, pageBounds);
+//	}
 
 	@Override
 	public NetworkAdapter selectByPrimaryKey(String columnId) {

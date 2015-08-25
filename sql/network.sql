@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2015-08-21 16:45:43
+Date: 2015-08-25 08:43:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -214,7 +214,7 @@ CREATE TABLE `base_users` (
 -- ----------------------------
 -- Records of base_users
 -- ----------------------------
-INSERT INTO `base_users` VALUES ('111', 'admin', '123456', '系统管理员', '0', 'admin@ty.com', '13888888888', '', null, '2015-08-21 16:34:32', '10.8.40.148', 'xxx', '0');
+INSERT INTO `base_users` VALUES ('111', 'admin', '123456', '系统管理员', '0', 'admin@ty.com', '13888888888', '', null, '2015-08-24 19:16:48', '10.8.40.148', 'xxx', '0');
 INSERT INTO `base_users` VALUES ('862bf83a7b0941e4801fe82c824cb05c', 'test3', '123456', '??1111111111111111111', '0', 'QQ1111111111111111@qq.com', '13512340009', '027-12345611', null, '2015-07-06 18:20:01', null, '1', '0');
 INSERT INTO `base_users` VALUES ('4a4e164516684b61a63e932d5151fd50', 'testtest1', '888888', 'fegkrjg', null, '', 'testtest1', null, null, '2015-07-08 13:28:02', '10.8.40.109', null, '0');
 INSERT INTO `base_users` VALUES ('ccf4b0265d304afa81439cccdfe1be90', 'test0051', '111111', 'test005', '1', '', '', '', null, '2015-07-23 13:52:22', '10.8.40.108', '', '0');
@@ -284,6 +284,8 @@ CREATE TABLE `device` (
   `device_name` varchar(255) DEFAULT NULL,
   `device_type` varchar(64) DEFAULT NULL,
   `device_os` varchar(255) DEFAULT NULL,
+  `device_flag` varchar(32) DEFAULT NULL,
+  `auth_stat` varchar(32) DEFAULT NULL,
   `device_purpose` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`device_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -291,6 +293,9 @@ CREATE TABLE `device` (
 -- ----------------------------
 -- Records of device
 -- ----------------------------
+INSERT INTO `device` VALUES ('6015dca0984f496394f14b44417109fa', '7e836e9d98444ed8bf3bbb4320ea706e', '笔记本电脑', '便携式笔记本', 'win7', '1', '1', '学习');
+INSERT INTO `device` VALUES ('783999fa1af84dc6bbeac0a5a8c58ae7', 'd8f80003263a4692b9d7a832e59ef0d6', '444', '4555', '667767', '0', '1', '6564654');
+INSERT INTO `device` VALUES ('c85317d8df7c4b77bbb478bf1ab2687e', '7e836e9d98444ed8bf3bbb4320ea706e', 'test1', '笔记本', 'win7', '0', '1', '开会');
 
 -- ----------------------------
 -- Table structure for networkadapter
@@ -311,6 +316,10 @@ CREATE TABLE `networkadapter` (
 -- ----------------------------
 -- Records of networkadapter
 -- ----------------------------
+INSERT INTO `networkadapter` VALUES ('09289554428c4704a6ec13db611aa136', '无线网卡', '55555', '6015dca0984f496394f14b44417109fa', null, null, '10.54.68.125', '2015-10-09 18:48:13');
+INSERT INTO `networkadapter` VALUES ('dfe1e968c99f4e1d8b47c1651a539bda', '无线网卡', '123456', 'c85317d8df7c4b77bbb478bf1ab2687e', null, null, '10.54.68.178', '2015-10-09 18:48:13');
+INSERT INTO `networkadapter` VALUES ('e2cd8fefe03a4b58949ca6c98f0af551', '111', '1222', '783999fa1af84dc6bbeac0a5a8c58ae7', null, null, null, null);
+INSERT INTO `networkadapter` VALUES ('e317da7a66f648fbad9f53e63efc51db', '有线网卡', '12345', '6015dca0984f496394f14b44417109fa', null, null, '10.54.68.215', '2015-10-09 18:48:13');
 
 -- ----------------------------
 -- Table structure for switch
@@ -367,6 +376,8 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('7e836e9d98444ed8bf3bbb4320ea706e', 'test', '1', '研发', '123456', '123@qq.com', null);
+INSERT INTO `user` VALUES ('d8f80003263a4692b9d7a832e59ef0d6', 'aaaa', '1', '12321321', '1234141', '312@123', null);
 
 -- ----------------------------
 -- Table structure for vlan

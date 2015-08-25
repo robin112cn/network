@@ -15,7 +15,7 @@ public interface NetworkAdapterInfoService {
 	int deleteByPrimaryKey(String columnId);
 	int insertSelective(NetworkAdapter record);
 	List<NetworkAdapter> selectByExample(NetworkAdapterExample example);
-	PageList<NetworkAdapter> selectByExamplePaging(NetworkAdapterExample example, PageBounds pageBounds);
+	//PageList<NetworkAdapter> selectByExamplePaging(NetworkAdapterExample example, PageBounds pageBounds);
 	NetworkAdapter selectByPrimaryKey(String columnId);
 	int updateByExampleSelective(@Param("record") NetworkAdapter record,
 			@Param("example") NetworkAdapterExample example);
