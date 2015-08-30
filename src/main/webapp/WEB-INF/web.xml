@@ -93,7 +93,7 @@
 	</servlet-mapping>
 	<!-- ckfinder配置 -->
 
-	<servlet>
+	<!-- <servlet>
 		<servlet-name>ConnectorServlet</servlet-name>
 		<servlet-class>com.ckfinder.connector.ConnectorServlet</servlet-class>
 		<init-param>
@@ -129,7 +129,7 @@
 		<url-pattern>
 			/ckfinder/core/connector/java/connector.java
      	 </url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 	<!-- Session 配置 -->
 	<session-config>
 		<session-timeout>30</session-timeout>

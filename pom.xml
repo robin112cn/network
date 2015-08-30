@@ -258,7 +258,7 @@
 		<dependency>
 			<groupId>com.whty</groupId>
 			<artifactId>cms-common</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 		  <groupId>com.whty</groupId>

@@ -34,6 +34,8 @@ public class DeviceDto {
 	private String np3Ip;
 	private Date np3Deadline;
 	
+	private String npNum;
+	
 	private String tag;
 	
 	public String getUserId() {
@@ -192,6 +194,12 @@ public class DeviceDto {
 	}
 	public void setDeviceFlag(String deviceFlag) {
 		this.deviceFlag = deviceFlag;
+	}
+	public String getNpNum() {
+		return npNum;
+	}
+	public void setNpNum(String npNum) {
+		this.npNum = npNum;
 	}
 
 }

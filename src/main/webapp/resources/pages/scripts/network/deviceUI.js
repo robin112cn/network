@@ -385,16 +385,28 @@ var deviceUI = function() {
 								'targets' : [1]
 							}, {
 								'orderable' : false,
-								'width' : "80px",
+								'width' : "100px",
 								'targets' : [2]
 							}, {
 								'orderable' : false,
-								'width' : "80px",
+								'width' : "180px",
 								'targets' : [3]
 							},{
 								'orderable' : false,
-								
+								'width' : "60px",
 								'targets' : [4]
+							},{
+								'orderable' : false,
+								'width' : "60px",
+								'targets' : [5]
+							},{
+								'orderable' : false,
+								'width' : "60px",
+								'targets' : [6]
+							},{
+								'orderable' : false,
+								
+								'targets' : [7]
 							}],
 						'columns' : [{
 								'title' : '设备名称',
@@ -416,6 +428,9 @@ var deviceUI = function() {
 								'title' : 'IP分配状态',
 								'field' : 'deviceFlag',
 								'fieldRender' : "checkFlagStat"
+							}, {
+								'title' : '网卡数量',
+								'field' : 'npNum'
 							},{
 								'title' : '操作',
 								'field' : 'deviceId',
@@ -464,9 +479,10 @@ var deviceUI = function() {
 				});
 		// 新增
 		$('#create').click(function() {
-					setFormStatus("add");
-					Metronic.handleFixInputPlaceholderForIE();
-					$('#view').modal('show');
+			window.location.href=ctx + '/deviceManage/show?menu_id=1192&ac=add';
+//					setFormStatus("add");
+//					Metronic.handleFixInputPlaceholderForIE();
+//					$('#view').modal('show');
 				});
 		// 保存
 		$('#addDevice').click(function() {
